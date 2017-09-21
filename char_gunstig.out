@@ -1,0 +1,5060 @@
+     1:*FILOS
+     2:  INITIA
+ FILOS FILE INITIALIZED
+ DI= 150   BF=   4096  16384  65536 2621441048576
+     3:*INPUT
+ /DIANA/DC/ST33    15:56:54      0.03-CPU     0.30-IO        7-FA   BEGIN 
+     4:*NONLIN LABEL="Structural nonlinear 1"
+     6: BEGIN EXECUT
+     7:    BEGIN START
+     8:      BEGIN INITIA
+     9:        BEGIN STRESS
+    10:          BEGIN INPUT
+    11:            LOAD=6
+    12:            FACTOR=1
+    13:          END INPUT
+    14:        END STRESS
+    15:      END INITIA
+    16:     BEGIN STEPS
+    17:      BEGIN EXPLIC
+    18:       SIZES 0.3(100)
+    19:      END EXPLIC
+    20:     END STEPS
+    21:    END START
+    22:   BEGIN ITERAT
+    23:     BEGIN CONVER
+    24:       BEGIN DISPLA
+    25:         CONTIN
+    26:         TOLCON 0.01
+    27:       END DISPLA
+    28:       BEGIN FORCE
+    29:         CONTIN
+    30:         TOLCON 0.01
+    31:       END FORCE
+    32:     END CONVER
+    33:     LINESE
+    34:     MAXITE 20
+    35:      METHOD NEWTON
+    36:   END ITERAT
+    37:   PHYSIC SUPPRE
+    39:   STOP LOAD TOTAL 1
+    40:  END EXECUT
+    42:  BEGIN EXECUT
+    43:    TEXT 'BLOCK_DEAD LOAD'
+    44:    BEGIN LOAD
+    45:      LOADNR 1
+    46:      STEPS EXPLIC SIZES 0.25(4)
+    47:    END LOAD
+    48:    BEGIN ITERAT
+    49:      MAXITE 20
+    50:      METHOD NEWTON
+    51:      BEGIN CONVER
+    52:        FORCE OFF
+    53:        DISPLA OFF
+    54:        ENERGY CONTIN
+    55:      END CONVER
+    56:    END ITERAT
+    57:  END EXECUT
+    59:  BEGIN EXECUT
+    60:    TEXT 'BLOCK_VERTICAL'
+    61:    BEGIN LOAD
+    62:      LOADNR 2
+    63:      STEPS EXPLIC SIZES 0.263681(4)
+    64:    END LOAD
+    65:    BEGIN ITERAT
+    66:      MAXITE 20
+    67:      METHOD NEWTON
+    68:      BEGIN CONVER
+    69:        FORCE OFF
+    70:        DISPLA OFF
+    71:        ENERGY CONTIN
+    72:      END CONVER
+    73:    END ITERAT
+    74:  END EXECUT
+    76:  BEGIN EXECUT
+    77:    TEXT 'BLOCK_WIND'
+    78:    BEGIN LOAD
+    79:      LOADNR 11
+    80:      STEPS EXPLIC SIZES 0.148782(5)
+    81:    END LOAD
+    82:    BEGIN ITERAT
+    83:      MAXITE 20
+    84:      METHOD NEWTON
+    85:      BEGIN CONVER
+    86:        FORCE OFF
+    87:        DISPLA OFF
+    88:        ENERGY CONTIN
+    89:      END CONVER
+    90:    END ITERAT
+    91:  END EXECUT
+    93:  BEGIN EXECUT
+    94:    TEXT 'BLOCK_DL_CORRECTION'
+    95:    BEGIN LOAD
+    96:      LOADNR 1
+    97:      STEPS EXPLIC SIZES -0.05(2)
+    98:    END LOAD
+    99:    BEGIN ITERAT
+   100:      MAXITE 20
+   101:      METHOD NEWTON
+   102:      BEGIN CONVER
+   103:        FORCE OFF
+   104:        DISPLA OFF
+   105:        ENERGY CONTIN
+   106:      END CONVER
+   107:    END ITERAT
+   108:  END EXECUT
+   110:  BEGIN EXECUT
+   111:    TEXT 'BLOCK_FV_CORRECTION'
+   112:    BEGIN LOAD
+   113:      LOADNR 2
+   114:      STEPS EXPLIC SIZES -0.077363(2)
+   115:    END LOAD
+   116:    BEGIN ITERAT
+   117:      MAXITE 20
+   118:      METHOD NEWTON
+   119:      BEGIN CONVER
+   120:        FORCE OFF
+   121:        DISPLA OFF
+   122:        ENERGY CONTIN
+   123:      END CONVER
+   124:    END ITERAT
+   125:  END EXECUT
+   127:  BEGIN EXECUT
+   128:    TEXT 'BLOCK_WIND2'
+   129:    BEGIN LOAD
+   130:      LOADNR 11
+   131:      STEPS EXPLIC SIZES 0.07122(5) 0.05(100)
+   132:    END LOAD
+   133:    BEGIN ITERAT
+   134:      MAXITE 20
+   135:      METHOD NEWTON
+   136:      BEGIN CONVER
+   137:        FORCE OFF
+   138:        DISPLA OFF
+   139:        ENERGY CONTIN
+   140:      END CONVER
+   141:    END ITERAT
+   142:  END EXECUT
+   144:  SOLVE PARDIS
+   145:  BEGIN OUTPUT
+   146:  TEXT "Output"
+   147:  BINARY
+   148:  SELECT STEPS ALL /
+   152:   DISPLA  TOTAL  TRANSL  GLOBAL  X Y Z
+   153:   FORCE  REACTI  TRANSL  GLOBAL  X Y Z
+   154:   ELMFOR TOTAL TRANSL GLOBAL NODES
+   160:            BEGIN STRAIN
+   161:              BEGIN TOTAL
+   162:                BEGIN GREEN
+   163:                  BEGIN GLOBAL
+   164:                    XX YY ZZ XY YZ ZX
+   165:                    CENTER
+   166:                  END GLOBAL
+   167:                END GREEN
+   168:              END TOTAL
+   169:            END STRAIN
+   171:            BEGIN STRESS
+   172:               BEGIN TOTAL
+   173:                  BEGIN CAUCHY
+   174:                     BEGIN GLOBAL
+   175:                       XX YY ZZ XY YZ ZX
+   176:                       CENTER
+   177:                     END GLOBAL
+   178:                  END CAUCHY
+   179:               END TOTAL
+   180:            END STRESS
+   183:            BEGIN STRAIN
+   184:              BEGIN TOTAL
+   185:                BEGIN GREEN
+   186:                  BEGIN LOCAL
+   187:                    XX YY ZZ XY YZ ZX
+   188:                    CENTER
+   189:                  END LOCAL
+   190:                END GREEN
+   191:              END TOTAL
+   192:            END STRAIN
+   195:            BEGIN STRAIN
+   196:              BEGIN TOTAL
+   197:                BEGIN GREEN
+   198:                  BEGIN PRINCI
+   199:                    "1" "2" "3"
+   200:                    CENTER
+   201:                  END PRINCI
+   202:                END GREEN
+   203:              END TOTAL
+   204:            END STRAIN
+   206:            BEGIN STRESS
+   207:              BEGIN TOTAL
+   208:                BEGIN CAUCHY
+   209:                  BEGIN PRINCI
+   210:                    "1" "2" "3"
+   211:                    CENTER
+   212:                  END PRINCI
+   213:                END CAUCHY
+   214:              END TOTAL
+   215:            END STRESS
+   220:STRAIN CRACK GREEN
+   223:        BEGIN STRAIN
+   224:          BEGIN CRKSUM
+   225:            BEGIN GREEN
+   226:              BEGIN PRINCI
+   227:                "1" "2" "3"
+   228:                NODES
+   229:              END PRINCI
+   230:            END GREEN
+   231:          END CRKSUM
+   232:        END STRAIN
+   234:        BEGIN STRAIN
+   235:          BEGIN CRKWDT
+   236:            BEGIN GREEN
+   237:              BEGIN PRINCI
+   238:                "1" "2" "3"
+   239:                NODES
+   240:              END PRINCI
+   241:            END GREEN
+   242:          END CRKWDT
+   243:        END STRAIN
+   248:        STRAIN TOTAL TRACTI LOCAL X Y Z
+   249:        STRESS TOTAL TRACTI LOCAL X Y Z
+   255:            BEGIN STRESS
+   256:              BEGIN TOTAL
+   257:                BEGIN CAUCHY
+   258:                  BEGIN LOCAL
+   259:                    XX YY ZZ XY YZ ZX
+   260:                    CENTER
+   261:                  END LOCAL
+   262:                END CAUCHY
+   263:              END TOTAL
+   264:            END STRESS
+   267:           BEGIN STRAIN
+   268:             BEGIN TOTAL
+   269:               BEGIN GREEN
+   270:                 BEGIN LOCAL
+   271:                   XX YY ZZ XY YZ ZX
+   272:                   CENTER
+   273:                 END LOCAL
+   274:               END GREEN
+   275:             END TOTAL
+   276:           END STRAIN
+   278:            BEGIN STRESS
+   279:              BEGIN TOTAL
+   280:                BEGIN CAUCHY
+   281:                  BEGIN VONMIS
+   282:                    CENTER
+   283:                  END VONMIS
+   284:                END CAUCHY
+   285:              END TOTAL
+   286:            END STRESS
+   288:            BEGIN STRAIN
+   289:              BEGIN TOTAL
+   290:                BEGIN GREEN
+   291:                  BEGIN VONMIS
+   292:                    CENTER
+   293:                  END VONMIS
+   294:                END GREEN
+   295:              END TOTAL
+   296:            END STRAIN
+   299:  END OUTPUT
+   300:*END
+0
+              $$$$$$$    $$$$$$$$     $$     $$$     $$     $$
+              $$$$$$$$$  $$$$$$$$     $$     $$$$    $$     $$
+              $$     $$     $$       $$$$    $$$$    $$    $$$$
+              $$      $$    $$       $$$$    $$ $$   $$    $$$$
+              $$      $$    $$      $$  $$   $$ $$$  $$   $$  $$
+              $$      $$    $$      $$  $$   $$  $$$ $$   $$  $$
+              $$      $$    $$     $$$$$$$$  $$   $$ $$  $$$$$$$$
+              $$     $$     $$     $$$$$$$$  $$    $$$$  $$$$$$$$
+              $$$$$$$$$  $$$$$$$$ $$      $$ $$    $$$$ $$      $$
+              $$$$$$$    $$$$$$$$ $$      $$ $$     $$$ $$      $$
+
+
+
+ ****************************************************************************************
+ ****************************************************************************************
+ ***                                                                                  ***
+ *** : Diana Datafile written by Diana 10.1                                           ***
+ ***                                                                                  ***
+ ****************************************************************************************
+ ****************************************************************************************
+ *** DIANA RELEASE 10.1  LATEST UPDATE: 2017-04-25 13:38:53                           ***
+ ****************************************************************************************
+1
+ /DIANA/AP/IN51    15:56:59      0.38-CPU     1.31-IO       92-FA   BEGIN 
+ /DIANA/AP/NL41    15:57:12      6.31-CPU     2.05-IO      134-FA   BEGIN 
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 40598 of element 12000 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 41499 of element 12829 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 46367 of element 12836 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 33669 of element 12857 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 29776 of element 12921 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 29766 of element 13064 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 45719 of element 13176 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 29732 of element 13281 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 38424 of element 13474 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 46325 of element 13638 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 38011 of element 13638 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 40474 of element 13646 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 29732 of element 13714 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 45696 of element 13922 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 41834 of element 14107 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 38431 of element 14110 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 46225 of element 14207 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 45386 of element 14207 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 42307 of element 14238 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 42454 of element 14350 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 42490 of element 14362 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 45204 of element 14393 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 41801 of element 14521 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 29737 of element 14616 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 33840 of element 14616 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 44041 of element 14969 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 41489 of element 15272 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 38459 of element 15272 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 46121 of element 15726 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 35714 of element 15886 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 37262 of element 15886 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 42182 of element 15899 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 45662 of element 16072 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 35717 of element 16206 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 29734 of element 16293 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 33841 of element 16293 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 29735 of element 16293 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 37267 of element 16294 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 33785 of element 16657 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 33633 of element 16657 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 33667 of element 16757 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 43912 of element 16910 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 46354 of element 16910 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 46352 of element 16910 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 40204 of element 17160 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 43415 of element 17367 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 41402 of element 17412 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 46174 of element 17770 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/LB/EL30/0094
+ ERRORMSG.W: One of the angles between edges at node 43394 of element 17863 is
+ less than 10 degrees or larger than 170 degrees.
+
+ SEVERITY  : WARNING
+    50 WARNINGS SEEN
+ FURTHER WARNINGS WILL BE SUPPRESSED
+     ELEM. STIFFNESS STORED.
+     REINFO.STIFFNESS ADDED AND STORED
+     RHS-VECTORS INITIALIZED: ML=    11 ND=  276372 SF.RHSIDE
+     EXTER. LOAD INITIALIZED: ML=    11 ND=  276372 SF.EXTLOD
+     CONST.DISP. INITIALIZED: ML=    11 ND=  276372 SF.DISCON
+     INC. INITIAL STRAIN/STRESS LOAD ADDED TO RHS-VECT: NV=    11 SF.RHSIDE
+     ELEMENTLOAD TO RHS-VECT: NV=    11 SF.RHSIDE
+     ELEMENTLOAD TO EXT.LOAD: NV=    11 SF.EXTLOD
+     TOTAL MASS OF FE-MODEL FOR LOAD-CASE(  1): 0.53131D+06
+     WEIGHT LOAD R.H.S.     : NV=    11 SF.RHSIDE
+     WEIGHT LOAD EXTERNAL   : NV=    11 SF.EXTLOD
+  
+     SUM OF EXT.LOAD TO CALC: ML=    11 ND=  276372 SF.EXTLOD
+  
+ SUM OF EXTERNAL LOADS:
+ ======================
+ LOADSET POSITION  TR  X       TR  Y       TR  Z       RO  X       RO  Y       RO  Z
+       1           0.0000E+00  0.0000E+00 -0.5212E+07 -0.1614E+08  0.2172E+02  0.0000E+00
+       2           0.0000E+00  0.0000E+00 -0.2175E+07 -0.2776E+07 -0.1574E-06  0.0000E+00
+       3           0.7185E+06  0.0000E+00  0.0000E+00  0.0000E+00  0.2227E+07 -0.9172E+06
+       4           0.0000E+00  0.0000E+00  0.2099E-05 -0.2040E+02  0.5855E+08  0.0000E+00
+       5           0.0000E+00  0.0000E+00  0.1365E+07  0.4578E+07  0.5251E-07  0.0000E+00
+       6           0.0000E+00  0.0000E+00  0.0000E+00  0.0000E+00  0.0000E+00  0.0000E+00
+       7           0.7904E+06  0.0000E+00 -0.7083E+07 -0.1758E+08  0.6685E+08 -0.1009E+07
+       8           0.7904E+06  0.0000E+00 -0.8647E+07 -0.2243E+08  0.6685E+08 -0.1009E+07
+       9           0.7185E+06  0.0000E+00 -0.6865E+07 -0.1731E+08  0.6078E+08 -0.9172E+06
+      10           0.7185E+06  0.0000E+00 -0.7387E+07 -0.1892E+08  0.6078E+08 -0.9172E+06
+      11           0.7185E+06  0.0000E+00  0.2099E-05 -0.2040E+02  0.6078E+08 -0.9172E+06
+  ANALYSIS INCLUDES:
+ 
+    PHYSICALLY NONLINEAR BEHAVIOR:
+      PLASTICITY FIRST   NS=  25 TY= 1.000E-04
+      INTERFACE
+      TOTAL STRAIN-BASED CRACK MODEL 
+ 
+      ELEMENTLOAD TO RHS-VECT: MC=    11 SF.RESLOD
+ 
+  STEP      1 INITIATED:
+   LOAD INCREMENT:  START STEPS *   3.000E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.27E+07) NI=    1
+      ETA-ENERGY DIAGRAM    0    0.000E+00    2.833E+03
+      ETA-ENERGY DIAGRAM    1    1.000E+00    3.504E-02
+ 
+  STEP      1 : DISPLACEMENT NORM =  1.157E-02         TOLERANCE =  1.000E-02
+  STEP      1 : FORCE NORM        =  6.276E+06         TOLERANCE =  1.000E-02
+ 
+  RELATIVE OUT OF BALANCE FORCE   =  1.087E-03         CHECK = TRUE
+ 
+  STEP      1 TERMINATED, CONVERGENCE AFTER   0 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(12) *   3.000E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL                  9         9         0         9         0         9         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.72819D-07     0.99265D-07     0.30144D-06
+  
+ 
+  STEP      2 INITIATED:
+   LOAD INCREMENT:  START STEPS *   3.000E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.27E+07) NI=    1
+      ETA-ENERGY DIAGRAM    0    0.000E+00    2.833E+03
+      ETA-ENERGY DIAGRAM    1    1.000E+00    1.568E+00
+ 
+  STEP      2 : DISPLACEMENT NORM =  1.157E-02         TOLERANCE =  1.000E-02
+  STEP      2 : FORCE NORM        =  3.644E+06         TOLERANCE =  1.000E-02
+ 
+  RELATIVE OUT OF BALANCE FORCE   =  2.787E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-14 (INIT. RES= 0.10E+06) NI=    1
+      ETA-ENERGY DIAGRAM    0    0.000E+00    5.371E-01
+      ETA-ENERGY DIAGRAM    1    1.000E+00    2.478E-01
+ 
+  RELATIVE DISPLACEMENT VARIATION =  9.445E-04         CHECK = TRUE
+  RELATIVE OUT OF BALANCE FORCE   =  1.428E-02         CHECK = FALSE
+ 
+  STEP      2 TERMINATED, CONVERGENCE AFTER   1 ITERATION
+   TOTAL LOAD FACTOR:  LOADING(12) *   6.000E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL                193       193         0       193         0       184         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                               -0.54294D-09     0.12987D+04     0.73786D-09
+  
+ 
+  STEP      3 INITIATED:
+   LOAD INCREMENT:  START STEPS *   3.000E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.27E+07) NI=    1
+      ETA-ENERGY DIAGRAM    0    0.000E+00    2.835E+03
+      ETA-ENERGY DIAGRAM    1    1.000E+00    4.600E+00
+ 
+  STEP      3 : DISPLACEMENT NORM =  1.156E-02         TOLERANCE =  1.000E-02
+  STEP      3 : FORCE NORM        =  1.167E+06         TOLERANCE =  1.000E-02
+ 
+  RELATIVE OUT OF BALANCE FORCE   =  1.931E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.20E-14 (INIT. RES= 0.23E+06) NI=    1
+      ETA-ENERGY DIAGRAM    0    0.000E+00    2.982E+00
+      ETA-ENERGY DIAGRAM    1    1.000E+00    1.556E+00
+ 
+  RELATIVE DISPLACEMENT VARIATION =  3.179E-03         CHECK = TRUE
+  RELATIVE OUT OF BALANCE FORCE   =  1.138E-01         CHECK = FALSE
+ 
+  STEP      3 TERMINATED, CONVERGENCE AFTER   1 ITERATION
+   TOTAL LOAD FACTOR:  LOADING(12) *   9.000E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL                489       489         0       489         0       296         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.45010D-09     0.23706D+04    -0.30503D-08
+  
+ 
+  STEP      4 INITIATED:
+   LOAD INCREMENT:  START STEPS *   1.000E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.96E+06) NI=    1
+      ETA-ENERGY DIAGRAM    0    0.000E+00    3.182E+02
+      ETA-ENERGY DIAGRAM    1    1.000E+00    2.344E+00
+ 
+  STEP      4 : DISPLACEMENT NORM =  3.851E-03         TOLERANCE =  1.000E-02
+  STEP      4 : FORCE NORM        =  6.558E+05         TOLERANCE =  1.000E-02
+ 
+  RELATIVE OUT OF BALANCE FORCE   =  2.708E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.44E-14 (INIT. RES= 0.18E+06) NI=    1
+      ETA-ENERGY DIAGRAM    0    0.000E+00    2.239E+00
+      ETA-ENERGY DIAGRAM    1    1.000E+00    1.464E+00
+ 
+  RELATIVE DISPLACEMENT VARIATION =  1.168E-02         CHECK = FALSE
+  RELATIVE OUT OF BALANCE FORCE   =  1.890E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-14 (INIT. RES= 0.12E+06) NI=    1
+      ETA-ENERGY DIAGRAM    0    0.000E+00    1.375E+00
+      ETA-ENERGY DIAGRAM    1    1.000E+00    1.176E+00
+      LINE SEARCH LIMITED TO UPPER BOUND
+ 
+  RELATIVE DISPLACEMENT VARIATION =  6.156E-03         CHECK = TRUE
+  RELATIVE OUT OF BALANCE FORCE   =  1.722E-01         CHECK = FALSE
+ 
+  STEP      4 TERMINATED, CONVERGENCE AFTER   2 ITERATIONS
+  EXECUTION STOPPED ON TOTAL LOAD CRITERION
+  CONTINUED ANALYSIS POSSIBLE.
+   TOTAL LOAD FACTOR:  LOADING(12) *   1.000E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL                698       698         0       694         4       209         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.89594D-09     0.11246D+02    -0.67820D-08
+  
+ 
+  STEP      5 INITIATED:
+   LOAD INCREMENT:  LOADING( 1) *   2.500E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.53E-10 (INIT. RES= 0.11E+06) NI=    1
+ 
+  STEP      5 : ENERGY NORM       =  7.379E+02         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.56E-14 (INIT. RES= 0.11E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.949E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.23E-14 (INIT. RES= 0.69E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.176E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.20E-14 (INIT. RES= 0.59E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.068E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-14 (INIT. RES= 0.56E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.197E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-14 (INIT. RES= 0.73E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.736E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.24E-14 (INIT. RES= 0.11E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.802E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.32E-14 (INIT. RES= 0.11E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.047E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.21E-14 (INIT. RES= 0.60E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.351E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.20E-14 (INIT. RES= 0.62E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.804E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.32E-14 (INIT. RES= 0.55E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.737E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.27E-14 (INIT. RES= 0.35E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.035E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.31E-14 (INIT. RES= 0.27E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.391E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.27E-14 (INIT. RES= 0.22E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.871E-05         CHECK = TRUE
+ 
+  STEP      5 TERMINATED, CONVERGENCE AFTER  13 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING( 1) *   2.500E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL                912       912         0       871        41       214         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                               -0.13341D-10     0.36079D-02    -0.13030D+07
+  
+ 
+  STEP      6 INITIATED:
+   LOAD INCREMENT:  LOADING( 1) *   2.500E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.23E-09 (INIT. RES= 0.24E+05) NI=    1
+ 
+  STEP      6 : ENERGY NORM       =  2.217E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-13 (INIT. RES= 0.11E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.263E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.31E-14 (INIT. RES= 0.30E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.487E-05         CHECK = TRUE
+ 
+  STEP      6 TERMINATED, CONVERGENCE AFTER   2 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING( 1) *   5.000E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL                943       943         0       792       151        31         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.59516D-09    -0.20675D+01    -0.26061D+07
+  
+ 
+  STEP      7 INITIATED:
+   LOAD INCREMENT:  LOADING( 1) *   2.500E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.24E-09 (INIT. RES= 0.24E+05) NI=    1
+ 
+  STEP      7 : ENERGY NORM       =  3.696E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.29E-14 (INIT. RES= 0.17E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.045E-06         CHECK = TRUE
+ 
+  STEP      7 TERMINATED, CONVERGENCE AFTER   1 ITERATION
+   TOTAL LOAD FACTOR:  LOADING( 1) *   7.500E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL                969       969         0       785       184        26         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                               -0.30729D-09    -0.20674D+02    -0.39091D+07
+  
+ 
+  STEP      8 INITIATED:
+   LOAD INCREMENT:  LOADING( 1) *   2.500E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.25E-09 (INIT. RES= 0.20E+05) NI=    1
+ 
+  STEP      8 : ENERGY NORM       =  5.174E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.36E-14 (INIT. RES= 0.15E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.663E-06         CHECK = TRUE
+ 
+  STEP      8 TERMINATED, CONVERGENCE AFTER   1 ITERATION
+   TOTAL LOAD FACTOR:  LOADING( 1) *   1.000E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL               1000      1000         0       817       183        31         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                               -0.16600D-08    -0.16142D+02    -0.52121D+07
+  
+ 
+  STEP      9 INITIATED:
+   LOAD INCREMENT:  LOADING( 2) *   2.637E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.56E-10 (INIT. RES= 0.49E+05) NI=    1
+ 
+  STEP      9 : ENERGY NORM       =  2.842E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.25E-13 (INIT. RES= 0.33E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.085E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.24E-13 (INIT. RES= 0.22E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.311E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.20E-13 (INIT. RES= 0.16E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.952E-05         CHECK = TRUE
+ 
+  STEP      9 TERMINATED, CONVERGENCE AFTER   3 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING( 2) *   2.637E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL               1167      1167         0       989       178       167         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.41759D-09     0.50226D+02    -0.57855D+07
+  
+ 
+  STEP     10 INITIATED:
+   LOAD INCREMENT:  LOADING( 2) *   2.637E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.50E-10 (INIT. RES= 0.50E+05) NI=    1
+ 
+  STEP     10 : ENERGY NORM       =  3.157E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.43E-13 (INIT. RES= 0.45E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.484E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.47E-13 (INIT. RES= 0.28E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.479E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.44E-13 (INIT. RES= 0.19E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.187E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.34E-13 (INIT. RES= 0.14E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.318E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.22E-13 (INIT. RES= 0.12E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.689E-05         CHECK = TRUE
+ 
+  STEP     10 TERMINATED, CONVERGENCE AFTER   5 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING( 2) *   5.274E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL               1331      1331         0      1154       177       164         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                               -0.76314D-09    -0.40871D+01    -0.63589D+07
+  
+ 
+  STEP     11 INITIATED:
+   LOAD INCREMENT:  LOADING( 2) *   2.637E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.50E-10 (INIT. RES= 0.49E+05) NI=    1
+ 
+  STEP     11 : ENERGY NORM       =  3.473E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.60E-13 (INIT. RES= 0.44E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.320E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.54E-13 (INIT. RES= 0.25E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.739E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.43E-13 (INIT. RES= 0.15E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.879E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.24E-13 (INIT. RES= 0.13E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.992E-05         CHECK = TRUE
+ 
+  STEP     11 TERMINATED, CONVERGENCE AFTER   4 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING( 2) *   7.910E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL               1381      1381         0      1206       175        50         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.91248D-10    -0.33807D+02    -0.69323D+07
+  
+ 
+  STEP     12 INITIATED:
+   LOAD INCREMENT:  LOADING( 2) *   2.637E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.47E-10 (INIT. RES= 0.50E+05) NI=    1
+ 
+  STEP     12 : ENERGY NORM       =  3.788E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.66E-13 (INIT. RES= 0.38E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.395E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.52E-13 (INIT. RES= 0.28E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.228E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.41E-13 (INIT. RES= 0.24E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.887E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.40E-13 (INIT. RES= 0.18E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.200E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.43E-13 (INIT. RES= 0.14E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.691E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.40E-13 (INIT. RES= 0.11E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.289E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.39E-13 (INIT. RES= 0.81E+04) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.702E-05         CHECK = TRUE
+ 
+  STEP     12 TERMINATED, CONVERGENCE AFTER   7 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING( 2) *   1.055E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL               1708      1708         0      1541       167       327         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                               -0.17569D-08    -0.42679D+02    -0.75056D+07
+  
+ 
+  STEP     13 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   1.488E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.25E-10 (INIT. RES= 0.50E+06) NI=    1
+ 
+  STEP     13 : ENERGY NORM       =  1.665E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.60E-13 (INIT. RES= 0.14E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.564E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.55E-13 (INIT. RES= 0.99E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.981E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.52E-13 (INIT. RES= 0.59E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.526E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.47E-13 (INIT. RES= 0.33E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.427E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.41E-13 (INIT. RES= 0.22E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.932E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.34E-13 (INIT. RES= 0.15E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.553E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.29E-13 (INIT. RES= 0.10E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.678E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.28E-13 (INIT. RES= 0.72E+04) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.603E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.20E-13 (INIT. RES= 0.53E+04) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.827E-05         CHECK = TRUE
+ 
+  STEP     13 TERMINATED, CONVERGENCE AFTER   9 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.488E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL               2081      2081         0      1229       852       373         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.10690D+06     0.21390D+03    -0.75056D+07
+  
+ 
+  STEP     14 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   1.488E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.24E-10 (INIT. RES= 0.50E+06) NI=    1
+ 
+  STEP     14 : ENERGY NORM       =  5.004E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.98E-13 (INIT. RES= 0.14E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.782E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.56E-13 (INIT. RES= 0.11E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.261E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.52E-13 (INIT. RES= 0.96E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.606E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.52E-13 (INIT. RES= 0.92E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.433E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.52E-13 (INIT. RES= 0.89E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.382E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.46E-13 (INIT. RES= 0.87E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.352E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.45E-13 (INIT. RES= 0.81E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.334E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.44E-13 (INIT. RES= 0.73E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.235E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.45E-13 (INIT. RES= 0.69E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.088E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.37E-13 (INIT. RES= 0.66E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.422E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.37E-13 (INIT. RES= 0.63E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.251E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.31E-13 (INIT. RES= 0.61E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.309E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.35E-13 (INIT. RES= 0.59E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.549E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.30E-13 (INIT. RES= 0.55E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.911E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.31E-13 (INIT. RES= 0.50E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.371E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.28E-13 (INIT. RES= 0.46E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.896E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.30E-13 (INIT. RES= 0.43E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.501E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.29E-13 (INIT. RES= 0.41E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.176E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.27E-13 (INIT. RES= 0.39E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.924E-04         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.26E-13 (INIT. RES= 0.39E+05) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.753E-04         CHECK = FALSE
+ 
+  STEP     14 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   2.976E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL               2855      2855         0      1910       945       774         0         0
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.21380D+06    -0.28662D+03    -0.75056D+07
+  
+ 
+  STEP     15 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   1.488E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.25E-10 (INIT. RES= 0.50E+06) NI=    1
+ 
+  STEP     15 : ENERGY NORM       =  8.371E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.96E-13 (INIT. RES= 0.30E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.563E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.84E-13 (INIT. RES= 0.18E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.742E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.65E-13 (INIT. RES= 0.17E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.927E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.70E-13 (INIT. RES= 0.16E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.605E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.61E-13 (INIT. RES= 0.15E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.398E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.56E-13 (INIT. RES= 0.15E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.209E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.57E-13 (INIT. RES= 0.14E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.045E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.51E-13 (INIT. RES= 0.14E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.919E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.52E-13 (INIT. RES= 0.14E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.854E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.62E-13 (INIT. RES= 0.14E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.835E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.59E-13 (INIT. RES= 0.14E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.852E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.58E-13 (INIT. RES= 0.14E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.902E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.57E-13 (INIT. RES= 0.14E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.004E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.59E-13 (INIT. RES= 0.15E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.125E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.66E-13 (INIT. RES= 0.15E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.269E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.60E-13 (INIT. RES= 0.15E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.388E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.68E-13 (INIT. RES= 0.16E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.501E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.63E-13 (INIT. RES= 0.16E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.599E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.64E-13 (INIT. RES= 0.17E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.677E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.61E-13 (INIT. RES= 0.17E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.778E-03         CHECK = FALSE
+ 
+  STEP     15 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   4.463E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL               5044      5042         2      3816      1228      2189         0         2
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.32070D+06    -0.92202D+04    -0.75056D+07
+  
+ 
+  STEP     16 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   1.488E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.24E-10 (INIT. RES= 0.53E+06) NI=    1
+ 
+  STEP     16 : ENERGY NORM       =  1.183E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.88E-13 (INIT. RES= 0.75E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.286E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.99E-13 (INIT. RES= 0.39E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.500E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.37E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.757E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.36E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.506E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.36E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.449E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.35E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.480E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.35E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.550E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.35E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.658E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.35E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.809E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.10E-12 (INIT. RES= 0.37E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.068E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.38E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.356E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.39E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.698E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.40E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.076E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.39E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.367E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.40E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.536E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.40E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.748E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.41E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.006E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.42E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.031E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.43E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.056E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.45E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.083E-02         CHECK = FALSE
+ 
+  STEP     16 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   5.951E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL              16491     16455        36     14802      1689     11447         1        35
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.42760D+06     0.26461D+05    -0.75056D+07
+  
+ 
+  STEP     17 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   1.488E-01
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-10 (INIT. RES= 0.69E+06) NI=    1
+ 
+  STEP     17 : ENERGY NORM       =  1.573E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.95E-13 (INIT. RES= 0.19E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.518E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.81E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.200E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.76E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.164E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.20E-12 (INIT. RES= 0.76E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.161E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-12 (INIT. RES= 0.76E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.175E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-12 (INIT. RES= 0.75E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.195E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.19E-12 (INIT. RES= 0.76E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.223E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.77E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.265E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-12 (INIT. RES= 0.77E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.308E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.19E-12 (INIT. RES= 0.78E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.342E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.20E-12 (INIT. RES= 0.80E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.378E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.20E-12 (INIT. RES= 0.80E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.407E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.21E-12 (INIT. RES= 0.80E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.404E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.20E-12 (INIT. RES= 0.81E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.389E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-12 (INIT. RES= 0.81E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.366E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-12 (INIT. RES= 0.81E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.351E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.82E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.342E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.81E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.325E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.80E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.290E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-12 (INIT. RES= 0.80E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.248E-02         CHECK = FALSE
+ 
+  STEP     17 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   7.439E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL              43811     43048       763     39824      3987     27320        18       745
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.53450D+06    -0.26427D+06    -0.75056D+07
+  
+ 
+  STEP     18 INITIATED:
+   LOAD INCREMENT:  LOADING( 1) *  -5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-11 (INIT. RES= 0.79E+06) NI=    1
+ 
+  STEP     18 : ENERGY NORM       =  1.416E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.27E-13 (INIT. RES= 0.35E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.548E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.79E-13 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.454E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.10E-12 (INIT. RES= 0.83E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.434E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.73E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.440E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.67E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.432E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.62E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.419E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.60E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.407E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.57E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.396E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.56E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.382E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.55E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.362E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.54E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.339E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.53E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.315E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.52E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.290E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.50E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.268E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.49E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.231E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.48E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.194E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.47E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.160E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.46E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.127E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.45E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.096E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.45E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.070E-01         CHECK = FALSE
+ 
+  STEP     18 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING( 1) *   9.500E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL              54386     50329      4057     39999     14387     10575       244      3538
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.53450D+06    -0.67595D+05    -0.72450D+07
+  
+ 
+  STEP     19 INITIATED:
+   LOAD INCREMENT:  LOADING( 1) *  -5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.27E-11 (INIT. RES= 0.44E+06) NI=    1
+ 
+  STEP     19 : ENERGY NORM       =  1.652E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-13 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.096E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.62E-13 (INIT. RES= 0.47E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.423E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.84E-13 (INIT. RES= 0.41E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.088E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.94E-13 (INIT. RES= 0.38E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.393E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.88E-13 (INIT. RES= 0.37E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.529E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.94E-13 (INIT. RES= 0.36E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.586E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.97E-13 (INIT. RES= 0.36E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.589E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.98E-13 (INIT. RES= 0.35E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.557E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.92E-13 (INIT. RES= 0.35E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.500E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.10E-12 (INIT. RES= 0.35E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.424E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.92E-13 (INIT. RES= 0.34E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.346E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.34E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.230E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.98E-13 (INIT. RES= 0.34E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.090E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.90E-13 (INIT. RES= 0.33E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.938E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.88E-13 (INIT. RES= 0.33E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.780E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.90E-13 (INIT. RES= 0.32E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.630E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.87E-13 (INIT. RES= 0.32E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.491E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.95E-13 (INIT. RES= 0.31E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.372E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.91E-13 (INIT. RES= 0.31E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.265E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.78E-13 (INIT. RES= 0.30E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.162E-02         CHECK = FALSE
+ 
+  STEP     19 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING( 1) *   9.000E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL              58515     54425      4090     40476     18039      4129       369       402
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.53450D+06    -0.52881D+05    -0.69844D+07
+  
+ 
+  STEP     20 INITIATED:
+   LOAD INCREMENT:  LOADING( 2) *  -7.736E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.27E-11 (INIT. RES= 0.30E+06) NI=    1
+ 
+  STEP     20 : ENERGY NORM       =  1.217E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-13 (INIT. RES= 0.67E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.241E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.41E-13 (INIT. RES= 0.29E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.871E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.54E-13 (INIT. RES= 0.28E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.202E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.56E-13 (INIT. RES= 0.27E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.375E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.57E-13 (INIT. RES= 0.27E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.473E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.64E-13 (INIT. RES= 0.27E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.527E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.62E-13 (INIT. RES= 0.27E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.558E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.62E-13 (INIT. RES= 0.27E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.581E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.62E-13 (INIT. RES= 0.27E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.611E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.59E-13 (INIT. RES= 0.27E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.631E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.61E-13 (INIT. RES= 0.27E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.646E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.66E-13 (INIT. RES= 0.27E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.679E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.68E-13 (INIT. RES= 0.27E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.725E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.72E-13 (INIT. RES= 0.27E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.769E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.63E-13 (INIT. RES= 0.26E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.808E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.71E-13 (INIT. RES= 0.26E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.839E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.72E-13 (INIT. RES= 0.26E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.855E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.67E-13 (INIT. RES= 0.26E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.862E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.65E-13 (INIT. RES= 0.26E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.843E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.79E-13 (INIT. RES= 0.26E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.823E-02         CHECK = FALSE
+ 
+  STEP     20 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING( 2) *   9.774E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL              60821     56848      3973     40199     20622      2306       176        59
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.53450D+06    -0.68857D+05    -0.68162D+07
+  
+ 
+  STEP     21 INITIATED:
+   LOAD INCREMENT:  LOADING( 2) *  -7.736E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.30E-11 (INIT. RES= 0.26E+06) NI=    1
+ 
+  STEP     21 : ENERGY NORM       =  1.220E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.19E-13 (INIT. RES= 0.47E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.341E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.34E-13 (INIT. RES= 0.26E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.079E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.40E-13 (INIT. RES= 0.24E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.322E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.45E-13 (INIT. RES= 0.24E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.443E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.50E-13 (INIT. RES= 0.24E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.519E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.49E-13 (INIT. RES= 0.24E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.566E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.48E-13 (INIT. RES= 0.23E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.587E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.50E-13 (INIT. RES= 0.23E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.602E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.52E-13 (INIT. RES= 0.23E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.605E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.48E-13 (INIT. RES= 0.23E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.603E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.54E-13 (INIT. RES= 0.23E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.594E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.51E-13 (INIT. RES= 0.23E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.567E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.53E-13 (INIT. RES= 0.23E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.550E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.52E-13 (INIT. RES= 0.22E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.535E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.52E-13 (INIT. RES= 0.22E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.511E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.50E-13 (INIT. RES= 0.22E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.484E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.54E-13 (INIT. RES= 0.22E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.464E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.50E-13 (INIT. RES= 0.21E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.442E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.48E-13 (INIT. RES= 0.21E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.419E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.53E-13 (INIT. RES= 0.21E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.393E-02         CHECK = FALSE
+ 
+  STEP     21 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING( 2) *   9.000E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL              62244     58356      3888     39638     22606      1423       101        16
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.53450D+06    -0.70825D+05    -0.66480D+07
+  
+ 
+  STEP     22 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   7.122E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.19E-10 (INIT. RES= 0.32E+06) NI=    1
+ 
+  STEP     22 : ENERGY NORM       =  9.764E+03         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.23E-12 (INIT. RES= 0.38E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.178E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.32E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.754E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.31E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.350E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.95E-13 (INIT. RES= 0.31E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.166E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.82E-13 (INIT. RES= 0.31E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.060E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.86E-13 (INIT. RES= 0.30E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.934E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.73E-13 (INIT. RES= 0.30E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.459E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.72E-13 (INIT. RES= 0.30E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.125E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.70E-13 (INIT. RES= 0.30E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.873E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.63E-13 (INIT. RES= 0.30E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.657E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.62E-13 (INIT. RES= 0.30E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.451E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.68E-13 (INIT. RES= 0.30E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.241E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.62E-13 (INIT. RES= 0.29E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.019E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.61E-13 (INIT. RES= 0.29E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.805E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.65E-13 (INIT. RES= 0.29E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.596E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.60E-13 (INIT. RES= 0.29E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.421E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.64E-13 (INIT. RES= 0.29E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.277E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.58E-13 (INIT. RES= 0.29E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.170E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.58E-13 (INIT. RES= 0.29E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.090E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.65E-13 (INIT. RES= 0.28E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.002E-03         CHECK = FALSE
+ 
+  STEP     22 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   8.151E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             0        0       0          0           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL              67649     63879      3770     50041     17608      5405       129        11
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.58567D+06    -0.11307D+06    -0.66480D+07
+  
+ 
+  STEP     23 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   7.122E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-10 (INIT. RES= 0.37E+06) NI=    1
+ 
+  STEP     23 : ENERGY NORM       =  1.084E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.99E-13 (INIT. RES= 0.80E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.426E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.43E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.001E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.88E-13 (INIT. RES= 0.41E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.621E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.84E-13 (INIT. RES= 0.40E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.456E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.82E-13 (INIT. RES= 0.40E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.361E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.77E-13 (INIT. RES= 0.39E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.297E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.77E-13 (INIT. RES= 0.39E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.249E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.71E-13 (INIT. RES= 0.39E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.220E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.69E-13 (INIT. RES= 0.39E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.205E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.74E-13 (INIT. RES= 0.39E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.198E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.72E-13 (INIT. RES= 0.39E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.198E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.74E-13 (INIT. RES= 0.40E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.205E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.77E-13 (INIT. RES= 0.41E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.218E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.77E-13 (INIT. RES= 0.42E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.237E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.82E-13 (INIT. RES= 0.42E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.252E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.79E-13 (INIT. RES= 0.42E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.258E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.80E-13 (INIT. RES= 0.42E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.255E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.78E-13 (INIT. RES= 0.42E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.245E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.80E-13 (INIT. RES= 0.42E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.231E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.78E-13 (INIT. RES= 0.42E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.223E-02         CHECK = FALSE
+ 
+  STEP     23 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   8.863E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL             5        0       0          5           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL              76016     72318      3698     59166     16850      8367       157        85
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.63685D+06    -0.18545D+06    -0.66480D+07
+  
+ 
+  STEP     24 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   7.122E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-10 (INIT. RES= 0.49E+06) NI=    1
+ 
+  STEP     24 : ENERGY NORM       =  1.208E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.63E-13 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.314E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.95E-13 (INIT. RES= 0.61E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.450E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.94E-13 (INIT. RES= 0.57E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.107E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.94E-13 (INIT. RES= 0.55E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.960E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.92E-13 (INIT. RES= 0.54E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.866E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.92E-13 (INIT. RES= 0.54E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.792E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.91E-13 (INIT. RES= 0.54E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.737E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.90E-13 (INIT. RES= 0.53E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.701E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.91E-13 (INIT. RES= 0.53E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.676E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.90E-13 (INIT. RES= 0.53E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.658E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.88E-13 (INIT. RES= 0.53E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.642E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.88E-13 (INIT. RES= 0.53E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.633E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.88E-13 (INIT. RES= 0.53E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.628E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.93E-13 (INIT. RES= 0.53E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.627E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.92E-13 (INIT. RES= 0.53E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.628E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.86E-13 (INIT. RES= 0.54E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.624E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.90E-13 (INIT. RES= 0.54E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.618E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.87E-13 (INIT. RES= 0.54E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.614E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.88E-13 (INIT. RES= 0.54E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.610E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.89E-13 (INIT. RES= 0.54E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.614E-02         CHECK = FALSE
+ 
+  STEP     24 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   9.576E-01
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL            12        0       0          7           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL              89435     85658      3777     72071     17364     13419       193       272
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.68802D+06    -0.30849D+06    -0.66480D+07
+  
+ 
+  STEP     25 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   7.122E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.10E-10 (INIT. RES= 0.59E+06) NI=    1
+ 
+  STEP     25 : ENERGY NORM       =  1.349E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.50E-13 (INIT. RES= 0.18E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.917E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.78E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.014E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.72E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.768E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.70E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.735E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.70E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.715E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.70E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.680E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.70E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.629E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.70E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.573E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.71E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.523E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.71E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.484E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.71E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.435E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.72E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.382E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.72E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.333E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.73E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.293E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.73E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.251E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.72E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.205E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.72E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.148E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.72E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.097E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.10E-12 (INIT. RES= 0.71E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.055E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.97E-13 (INIT. RES= 0.72E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.025E-02         CHECK = FALSE
+ 
+  STEP     25 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.029E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL            15        0       0          3           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             109331    104997      4334     90104     19227     19896       266       823
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.73919D+06    -0.33764D+06    -0.66480D+07
+  
+ 
+  STEP     26 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   7.122E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.85E-11 (INIT. RES= 0.75E+06) NI=    1
+ 
+  STEP     26 : ENERGY NORM       =  1.534E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.38E-13 (INIT. RES= 0.24E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.951E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.387E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.92E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.994E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.89E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.876E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.87E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.828E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.86E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.809E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.804E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.810E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.818E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.822E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.827E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.834E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.837E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.826E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.813E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.814E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.827E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.853E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.879E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.85E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.900E-02         CHECK = FALSE
+ 
+  STEP     26 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.100E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL            23        0       0          8           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             136276    130859      5417    113231     23045     26945       379      1462
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.79036D+06    -0.21217D+06    -0.66480D+07
+  
+ 
+  STEP     27 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.52E-11 (INIT. RES= 0.87E+06) NI=    1
+ 
+  STEP     27 : ENERGY NORM       =  1.238E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.47E-13 (INIT. RES= 0.24E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.697E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.086E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.98E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.644E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.95E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.485E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.94E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.395E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.93E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.363E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.93E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.360E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.93E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.406E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.93E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.442E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.94E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.476E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.96E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.531E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.98E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.636E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.785E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.946E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.062E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.136E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.168E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.120E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.956E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.747E-02         CHECK = FALSE
+ 
+  STEP     27 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.150E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL            48       13       0         38          13           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             168423    161664      6759    137329     31094     32147       687      2029
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.82629D+06    -0.19496D+06    -0.66480D+07
+  
+ 
+  STEP     28 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.42E-11 (INIT. RES= 0.11E+07) NI=    1
+ 
+  STEP     28 : ENERGY NORM       =  1.399E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.21E-13 (INIT. RES= 0.39E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.440E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.15E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.429E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.13E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.044E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.13E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.847E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.717E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.621E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.572E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.549E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.517E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.478E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.450E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.442E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.404E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.318E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.240E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.173E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.135E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.126E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.124E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.130E-02         CHECK = FALSE
+ 
+  STEP     28 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.200E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL           200        0       0        152           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             197506    188076      9430    157275     40231     29083       943      3614
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.86221D+06    -0.30202D+06    -0.66480D+07
+  
+ 
+  STEP     29 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.43E-11 (INIT. RES= 0.11E+07) NI=    1
+ 
+  STEP     29 : ENERGY NORM       =  1.548E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.33E-13 (INIT. RES= 0.36E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.555E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.15E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.402E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.13E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.831E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.13E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.682E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.637E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.639E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.674E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.726E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.801E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.889E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.965E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.040E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.122E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.200E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.267E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.349E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.440E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.548E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.681E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.862E-02         CHECK = FALSE
+ 
+  STEP     29 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.250E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL           334        1       0        135           1           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             233916    223414     10502    185323     48593     36410      1373      2445
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.89814D+06    -0.36314D+06    -0.66480D+07
+  
+ 
+  STEP     30 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.39E-11 (INIT. RES= 0.12E+07) NI=    1
+ 
+  STEP     30 : ENERGY NORM       =  1.762E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.23E-13 (INIT. RES= 0.36E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.682E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.16E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.420E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.917E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.13E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.722E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.13E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.568E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.13E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.431E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.13E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.297E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.177E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.053E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.934E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.827E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.733E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.628E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.524E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.421E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.341E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.240E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.143E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.032E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.954E-02         CHECK = FALSE
+ 
+  STEP     30 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.300E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL           555        1       0        221           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             264689    252069     12620    204788     59901     30773      1375      3493
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.93406D+06    -0.34324D+06    -0.66480D+07
+  
+ 
+  STEP     31 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.44E-11 (INIT. RES= 0.11E+07) NI=    1
+ 
+  STEP     31 : ENERGY NORM       =  1.938E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.56E-13 (INIT. RES= 0.31E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.063E-03         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.347E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.567E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.215E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.988E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.823E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.700E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.594E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.505E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.422E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.341E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.267E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.194E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.128E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.073E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.010E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.950E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.895E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.836E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.786E-02         CHECK = FALSE
+ 
+  STEP     31 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.350E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL           874        1       0        319           0           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             285680    271840     13840    219127     66553     20991      1295      2515
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.96999D+06    -0.18803D+06    -0.66480D+07
+  
+ 
+  STEP     32 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.49E-11 (INIT. RES= 0.10E+07) NI=    1
+ 
+  STEP     32 : ENERGY NORM       =  2.121E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.20E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.567E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.073E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.025E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.623E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.380E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.208E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.082E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.974E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.889E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.825E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.774E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.732E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.702E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.677E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.653E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.635E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.614E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.586E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.566E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.538E-02         CHECK = FALSE
+ 
+  STEP     32 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.400E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL          1126        8       0        259           7           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             304737    291057     13680    235095     69642     19057      1208      1048
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.10059D+07    -0.15659D+06    -0.66480D+07
+  
+ 
+  STEP     33 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.52E-11 (INIT. RES= 0.10E+07) NI=    1
+ 
+  STEP     33 : ENERGY NORM       =  2.308E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.19E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.152E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.869E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.861E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.478E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.254E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.089E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.963E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.866E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.777E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.709E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.654E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.606E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.564E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.531E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.494E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.460E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.425E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.393E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.361E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.333E-02         CHECK = FALSE
+ 
+  STEP     33 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.450E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL          1476       13       0        362          12           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             322980    309851     13129    250013     72967     18243      1289       738
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.10418D+07    -0.15702D+06    -0.66480D+07
+  
+ 
+  STEP     34 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.56E-11 (INIT. RES= 0.10E+07) NI=    1
+ 
+  STEP     34 : ENERGY NORM       =  2.509E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.19E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.262E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.632E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.598E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.224E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.997E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.842E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.722E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.628E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.543E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.470E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.408E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.355E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.10E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.302E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.252E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.203E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.98E-13 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.160E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.99E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.118E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.99E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.078E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.10E-12 (INIT. RES= 0.98E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.041E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.98E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.008E-02         CHECK = FALSE
+ 
+  STEP     34 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.500E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL          1982       35       0        532          26           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             339828    327084     12744    264398     75430     16848      1075       690
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.10778D+07    -0.89741D+05    -0.66480D+07
+  
+ 
+  STEP     35 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.57E-11 (INIT. RES= 0.99E+06) NI=    1
+ 
+  STEP     35 : ENERGY NORM       =  2.715E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-12 (INIT. RES= 0.17E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.794E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.473E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.394E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.000E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.763E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.602E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.484E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.386E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.311E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.246E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.191E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.142E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.102E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.063E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.031E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.997E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.968E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.99E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.942E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.99E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.914E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.10E-12 (INIT. RES= 0.99E+06) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.892E-02         CHECK = FALSE
+ 
+  STEP     35 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.550E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL          2559       52       0        603          26           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             355609    343220     12389    278265     77344     15781       901       546
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.11137D+07    -0.43188D+05    -0.66480D+07
+  
+ 
+  STEP     36 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.59E-11 (INIT. RES= 0.10E+07) NI=    1
+ 
+  STEP     36 : ENERGY NORM       =  2.944E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.22E-12 (INIT. RES= 0.15E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.441E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.483E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.384E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.993E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.761E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.615E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.509E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.424E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.360E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.305E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.258E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.214E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.181E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.143E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.106E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.11E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.071E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.042E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.10E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.011E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.987E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.967E-02         CHECK = FALSE
+ 
+  STEP     36 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.600E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL          3267       78       0        737          29           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             371967    359895     12072    293312     78655     16358       823       506
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.11496D+07    -0.45215D+05    -0.66480D+07
+  
+ 
+  STEP     37 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.59E-11 (INIT. RES= 0.10E+07) NI=    1
+ 
+  STEP     37 : ENERGY NORM       =  3.205E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.23E-12 (INIT. RES= 0.17E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.622E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.19E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.650E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.507E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.100E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.858E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.703E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.584E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.486E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.416E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.347E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.301E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.253E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.208E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.172E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.141E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.112E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.087E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.061E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.038E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-12 (INIT. RES= 0.10E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.012E-02         CHECK = FALSE
+ 
+  STEP     37 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.650E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL          4111      110       0        880          36           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             387935    376028     11907    308251     79684     15968       735       570
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.11855D+07    -0.33461D+05    -0.66480D+07
+  
+ 
+  STEP     38 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.58E-11 (INIT. RES= 0.10E+07) NI=    1
+ 
+  STEP     38 : ENERGY NORM       =  3.481E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.29E-12 (INIT. RES= 0.16E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.238E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.21E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.882E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.700E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.266E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.022E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.859E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.739E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.640E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.555E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.481E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.429E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.387E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.358E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.326E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.310E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.293E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.288E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.280E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.270E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.14E-12 (INIT. RES= 0.11E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.254E-02         CHECK = FALSE
+ 
+  STEP     38 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.700E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL          5148      181       0       1110          73           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             405370    393816     11554    325546     79824     17435       746       393
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.12215D+07    -0.40425D+05    -0.66480D+07
+  
+ 
+  STEP     39 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.61E-11 (INIT. RES= 0.11E+07) NI=    1
+ 
+  STEP     39 : ENERGY NORM       =  3.806E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.28E-12 (INIT. RES= 0.18E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.938E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.25E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.291E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.21E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.078E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.19E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.667E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.19E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.470E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.19E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.359E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.288E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.222E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.170E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.125E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.098E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.118E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.121E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.118E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.120E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.146E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.168E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.189E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.202E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-12 (INIT. RES= 0.12E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.204E-02         CHECK = FALSE
+ 
+  STEP     39 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.750E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL          6154      467       0       1311         305           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             425438    414059     11379    345477     79961     20068       751       576
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.12574D+07    -0.80117D+05    -0.66480D+07
+  
+ 
+  STEP     40 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.55E-11 (INIT. RES= 0.12E+07) NI=    1
+ 
+  STEP     40 : ENERGY NORM       =  4.192E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.30E-12 (INIT. RES= 0.22E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.099E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.28E-12 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.572E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.23E-12 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.358E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.22E-12 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.964E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.22E-12 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.763E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.21E-12 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.639E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.21E-12 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.544E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.20E-12 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.498E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.20E-12 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.521E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.19E-12 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.490E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.20E-12 (INIT. RES= 0.14E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.451E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.19E-12 (INIT. RES= 0.15E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.391E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.19E-12 (INIT. RES= 0.15E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.321E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.19E-12 (INIT. RES= 0.15E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.266E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.15E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.235E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.15E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.235E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-12 (INIT. RES= 0.15E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.195E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-12 (INIT. RES= 0.15E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.165E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.15E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.137E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.17E-12 (INIT. RES= 0.15E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.171E-02         CHECK = FALSE
+ 
+  STEP     40 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.800E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL          8208      896       0       2519         465           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             445192    433598     11594    363155     82037     19754       702       917
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.12933D+07     0.95724D+05    -0.66480D+07
+  
+ 
+  STEP     41 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.49E-11 (INIT. RES= 0.15E+07) NI=    1
+ 
+  STEP     41 : ENERGY NORM       =  4.668E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.36E-12 (INIT. RES= 0.23E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.274E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.30E-12 (INIT. RES= 0.17E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.788E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.25E-12 (INIT. RES= 0.17E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.604E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.25E-12 (INIT. RES= 0.17E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.362E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.26E-12 (INIT. RES= 0.18E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.475E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.25E-12 (INIT. RES= 0.18E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.631E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.26E-12 (INIT. RES= 0.18E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.791E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.27E-12 (INIT. RES= 0.18E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.192E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.30E-12 (INIT. RES= 0.18E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.681E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.33E-12 (INIT. RES= 0.19E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.140E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.33E-12 (INIT. RES= 0.19E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.680E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.34E-12 (INIT. RES= 0.19E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.980E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.34E-12 (INIT. RES= 0.20E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.123E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.33E-12 (INIT. RES= 0.20E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.065E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.32E-12 (INIT. RES= 0.20E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.219E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.33E-12 (INIT. RES= 0.20E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.376E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.33E-12 (INIT. RES= 0.20E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.603E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.33E-12 (INIT. RES= 0.20E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.779E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.30E-12 (INIT. RES= 0.20E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.844E-02         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.34E-12 (INIT. RES= 0.20E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.006E-01         CHECK = FALSE
+ 
+  STEP     41 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.850E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL         11685     1612       0       4273         796           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             467910    456493     11417    386708     81202     22718       747       570
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.13292D+07    -0.15162D+05    -0.66480D+07
+  
+ 
+  STEP     42 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.41E-11 (INIT. RES= 0.20E+07) NI=    1
+ 
+  STEP     42 : ENERGY NORM       =  5.689E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.62E-12 (INIT. RES= 0.25E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.996E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.55E-12 (INIT. RES= 0.23E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.467E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.46E-12 (INIT. RES= 0.23E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.347E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.43E-12 (INIT. RES= 0.24E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.337E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.45E-12 (INIT. RES= 0.24E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.362E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.45E-12 (INIT. RES= 0.24E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.374E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.48E-12 (INIT. RES= 0.25E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.373E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.47E-12 (INIT. RES= 0.25E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.376E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.45E-12 (INIT. RES= 0.25E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.390E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.45E-12 (INIT. RES= 0.26E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.412E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.45E-12 (INIT. RES= 0.26E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.441E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.44E-12 (INIT. RES= 0.27E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.485E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.47E-12 (INIT. RES= 0.27E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.510E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.45E-12 (INIT. RES= 0.28E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.540E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.44E-12 (INIT. RES= 0.28E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.589E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.45E-12 (INIT. RES= 0.29E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.625E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.52E-12 (INIT. RES= 0.30E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.683E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.50E-12 (INIT. RES= 0.31E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.728E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.46E-12 (INIT. RES= 0.32E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.808E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.49E-12 (INIT. RES= 0.32E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.880E-01         CHECK = FALSE
+ 
+  STEP     42 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.900E+00
+ 
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL         18714     2088       0       7703         674           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             503594    492227     11367    426074     77520     35684       793       743
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.13652D+07     0.22338D+05    -0.66480D+07
+  
+ 
+  STEP     43 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.33E-11 (INIT. RES= 0.33E+07) NI=    1
+ 
+  STEP     43 : ENERGY NORM       =  7.714E+04         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.83E-12 (INIT. RES= 0.42E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.049E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.69E-12 (INIT. RES= 0.38E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.367E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.60E-12 (INIT. RES= 0.38E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.185E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.60E-12 (INIT. RES= 0.39E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.169E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.62E-12 (INIT. RES= 0.39E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.192E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.66E-12 (INIT. RES= 0.40E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.251E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.63E-12 (INIT. RES= 0.40E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.300E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.67E-12 (INIT. RES= 0.41E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.410E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.68E-12 (INIT. RES= 0.42E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.489E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.70E-12 (INIT. RES= 0.42E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.594E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.68E-12 (INIT. RES= 0.43E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.643E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.75E-12 (INIT. RES= 0.44E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.747E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.77E-12 (INIT. RES= 0.45E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.853E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.71E-12 (INIT. RES= 0.45E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.008E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.70E-12 (INIT. RES= 0.46E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.096E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.73E-12 (INIT. RES= 0.47E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.232E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.75E-12 (INIT. RES= 0.48E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.317E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.84E-12 (INIT. RES= 0.49E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.790E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.86E-12 (INIT. RES= 0.50E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.882E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.81E-12 (INIT. RES= 0.51E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.751E-01         CHECK = FALSE
+ 
+  STEP     43 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   1.950E+00
+ 
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/AP/LB40/0252
+ ERRORMSG.W: Internal iteration process in the plasticity routines did not
+ converge in 6 integration points. Calculated results in these elements
+ may be inaccurate.
+
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL         36636     2253       0      18652         730           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             559789    547541     12248    485718     74071     56195      1245      2126
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.14011D+07     0.16508D+06    -0.66480D+07
+  
+ 
+  STEP     44 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.34E-11 (INIT. RES= 0.52E+07) NI=    1
+ 
+  STEP     44 : ENERGY NORM       =  1.314E+05         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.15E-11 (INIT. RES= 0.67E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.059E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-11 (INIT. RES= 0.61E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.333E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.13E-11 (INIT. RES= 0.61E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.925E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-11 (INIT. RES= 0.62E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.250E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-11 (INIT. RES= 0.64E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  4.459E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.16E-11 (INIT. RES= 0.66E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  5.107E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.18E-11 (INIT. RES= 0.68E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.619E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.19E-11 (INIT. RES= 0.71E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.277E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.22E-11 (INIT. RES= 0.74E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.679E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.25E-11 (INIT. RES= 0.77E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.772E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.26E-11 (INIT. RES= 0.83E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.087E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.31E-11 (INIT. RES= 0.88E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.341E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.33E-11 (INIT. RES= 0.94E+07) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.591E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.37E-11 (INIT. RES= 0.10E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.741E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.38E-11 (INIT. RES= 0.11E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.821E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.33E-11 (INIT. RES= 0.12E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.839E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.37E-11 (INIT. RES= 0.12E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.169E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.36E-11 (INIT. RES= 0.13E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.209E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.39E-11 (INIT. RES= 0.13E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.350E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.37E-11 (INIT. RES= 0.14E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.585E+00         CHECK = FALSE
+ 
+  STEP     44 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   2.000E+00
+ 
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/AP/LB40/0252
+ ERRORMSG.W: Internal iteration process in the plasticity routines did not
+ converge in 31 integration points. Calculated results in these elements
+ may be inaccurate.
+
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL        112692     1586       0      76952         896           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             721271    702929     18342    658631     62640    161482      2983      9077
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.14370D+07     0.43297D+07    -0.66480D+07
+  
+ 
+  STEP     45 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.64E-11 (INIT. RES= 0.15E+08) NI=    1
+ 
+  STEP     45 : ENERGY NORM       =  6.695E+05         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.47E-11 (INIT. RES= 0.19E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.377E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.62E-11 (INIT. RES= 0.17E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.532E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.52E-11 (INIT. RES= 0.18E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  9.070E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.56E-11 (INIT. RES= 0.19E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.001E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.63E-11 (INIT. RES= 0.20E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.133E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.68E-11 (INIT. RES= 0.21E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.260E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.79E-11 (INIT. RES= 0.22E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.540E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.82E-11 (INIT. RES= 0.23E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.648E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.84E-11 (INIT. RES= 0.24E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  1.946E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.95E-11 (INIT. RES= 0.26E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.219E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.10E-10 (INIT. RES= 0.27E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.380E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=1
+      SOLVE: REDUCTION RES= 0.11E-10 (INIT. RES= 0.29E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.587E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.12E-10 (INIT. RES= 0.30E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  2.930E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=1
+      SOLVE: REDUCTION RES= 0.12E-10 (INIT. RES= 0.32E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.273E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=1
+      SOLVE: REDUCTION RES= 0.13E-10 (INIT. RES= 0.33E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.488E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=2
+      SOLVE: REDUCTION RES= 0.13E-10 (INIT. RES= 0.34E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.536E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=1
+      SOLVE: REDUCTION RES= 0.12E-10 (INIT. RES= 0.36E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.490E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=1
+      SOLVE: REDUCTION RES= 0.12E-10 (INIT. RES= 0.37E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.530E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=1
+      SOLVE: REDUCTION RES= 0.13E-10 (INIT. RES= 0.38E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.748E+00         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=1
+      SOLVE: REDUCTION RES= 0.12E-10 (INIT. RES= 0.39E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  3.720E+00         CHECK = FALSE
+ 
+  STEP     45 TERMINATED, NO CONVERGENCE AFTER  20 ITERATIONS
+   TOTAL LOAD FACTOR:  LOADING(11) *   2.050E+00
+ 
+ SEVERITY  : WARNING
+ ERROR CODE: /DIANA/AP/LB40/0252
+ ERRORMSG.W: Internal iteration process in the plasticity routines did not
+ converge in 473 integration points. Calculated results in these elements
+ may be inaccurate.
+
+   PLASTICITY LOGGING SUMMARY
+   GROUP NAME          PLAST, PRV. PL, CRITIC, PLAST NEW, PRV.PL NEW, CRITIC NEW
+   TOTAL MODEL        259164     3300       0     149468        2996           0
+   CRACKING LOGGING SUMMARY
+   GROUP NAME               CRACK,     OPEN,   CLOSED,   ACTIVE,   INACTI,   ARISES, RE-OPENS,   CLOSES
+   TOTAL MODEL             942183    898251     43932    873013     69170    220912      7270     32860
+     CUMULATIVE REACTION:         FORCE X        FORCE Y          FORCE Z
+                                0.14729D+07     0.28167D+08    -0.66480D+07
+  
+ 
+  STEP     46 INITIATED:
+   LOAD INCREMENT:  LOADING(11) *   5.000E-02
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=4
+      SOLVE: REDUCTION RES= 0.16E-10 (INIT. RES= 0.41E+08) NI=    1
+ 
+  STEP     46 : ENERGY NORM       =  3.738E+06         TOLERANCE =  1.000E-04
+ 
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=1
+      SOLVE: REDUCTION RES= 0.13E-10 (INIT. RES= 0.45E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  8.755E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=1
+      SOLVE: REDUCTION RES= 0.12E-10 (INIT. RES= 0.45E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.699E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=1
+      SOLVE: REDUCTION RES= 0.11E-10 (INIT. RES= 0.45E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.397E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=1
+      SOLVE: REDUCTION RES= 0.11E-10 (INIT. RES= 0.46E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  7.123E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      NR. OF NEGATIVE EIGENVALUES : NE=2
+      SOLVE: REDUCTION RES= 0.10E-10 (INIT. RES= 0.47E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.839E-01         CHECK = FALSE
+ 
+      SPARSE: DIM=272114 NNZ(MAT)=19119044
+      SOLVE: REDUCTION RES= 0.10E-10 (INIT. RES= 0.47E+08) NI=    1
+ 
+  RELATIVE ENERGY VARIATION       =  6.811E-01         CHECK = FALSE
+ 
