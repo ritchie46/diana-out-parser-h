@@ -1,3 +1,4 @@
+
 module ParsingOutFile
 
 where
@@ -7,33 +8,23 @@ import Control.Monad
 import Control.Applicative ((<|>))
 import Data.List.Split (splitOn)
 import Data.List (isInfixOf)
+import Data.Aeson (ToJSON, encode)
+import Data.ByteString.Lazy (ByteString)
+import Types
 
-type OutFile = (ExternalForces, [Block])
+ioStringToJSON :: ToJSON a => IO a -> IO ByteString
+ioStringToJSON x = do
+  st <- x
+  return $ encode st
 
-data Block = Block {
-    getLoadNumber :: Int
-,   getTotal :: Float
-,   getIncrement :: Float
-,   getStep :: Int
-,   getPlasticityLog :: LogValues
-,   getCrackLog :: LogValues
-,   getCumForces :: CumForces
-} deriving (Show)
+outFile :: String -> OutFile
+outFile st = fst . last $ readP_to_S pBlocks st
 
-type LogValues = [Int]
-type CumForces = (Maybe Float, Maybe Float, Maybe Float)
-type LoadNumber = Int
-type ExternalForce = Float
-type ExternalForces = [(LoadNumber, [ExternalForce])]
-
-
-outFile = readP_to_S blocks
-
-blocks :: ReadP OutFile
-blocks = do
+pBlocks :: ReadP OutFile
+pBlocks = do
   ef <- header
   bl <- many singleBlock
-  return (ef, bl)
+  return $ OutFile ef bl
 
 header :: ReadP ExternalForces
 header =  fmap (head . splitOn "SUM OF EXTERNAL LOADS") look >>= string
@@ -54,7 +45,7 @@ externalLoads = do
     return (read loadNumber, map read tr)
 
 
--- singleBlock :: ReadP Block
+singleBlock :: ReadP Block
 singleBlock = do
     st <- look
     if "LOAD INCREMENT" `isInfixOf` st then do
@@ -98,7 +89,7 @@ pLoggingValue = munch PP.nonDigit >> munch PP.digit
 pLoadFactor :: ReadP String
 pLoadFactor = munch PP.nonDigitOnLine >> munch PP.floatDot >> munch PP.nonDigitOnLine >> PP.isFloatDot
 
-totalLoad :: ReadP (Int, Float)
+totalLoad :: ReadP (Int, Double)
 totalLoad = do
     -- load number
     ld <- munch PP.nonDigitOnLine >> munch PP.digit
@@ -114,13 +105,13 @@ pCumForce = look >>= (\x -> if "CUMULATIVE REACTION" `isInfixOf` x then return x
             fy <- isDianaFloat
             munch PP.nonStartNumber
             fz <- isDianaFloat
-            return (fx, fy, fz)
+            return $ CumForces (fx, fy, fz)
 
 
 dianaFloat :: Char -> Bool
 dianaFloat x = PP.digit x || (x `elem` ".EeD-+^")
 
-isDianaFloat :: ReadP (Maybe Float)
+isDianaFloat :: ReadP (Maybe Double)
 isDianaFloat = let replace 'D' = 'E'
                    replace x = x
                in  fmap (Just . read . map replace) (munch1 dianaFloat) <++ return Nothing
