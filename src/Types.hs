@@ -7,7 +7,7 @@ module Types
   LoadNumber(..),
   ExternalForces(..),
   ExternalForce(..),
-  CumForces(..)
+  CumForces(..),  
   )
 where
 

@@ -61,6 +61,5 @@ whiteSpace = (`elem` " \t")
 
 pLine :: ReadP String
 pLine = fmap (++) (munch nonEol) <*> readPCharToString (satisfy eol)
-
-readPCharToString :: ReadP Char -> ReadP String
-readPCharToString = fmap (:[])
+  where
+    readPCharToString = fmap (:[])

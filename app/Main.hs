@@ -1,6 +1,7 @@
 module Main where
 
 import ParsingOutFile
+import Types
 
 
 -- main :: IO ()

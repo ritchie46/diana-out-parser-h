@@ -12,6 +12,7 @@ import Data.Aeson (ToJSON, encode)
 import Data.ByteString.Lazy (ByteString)
 import Types
 
+
 ioStringToJSON :: ToJSON a => IO a -> IO ByteString
 ioStringToJSON x = do
   st <- x
@@ -23,6 +24,7 @@ outFile st = fst . last $ readP_to_S pBlocks st
 pBlocks :: ReadP OutFile
 pBlocks = do
   ef <- header
+
   bl <- many singleBlock
   return $ OutFile ef bl
 
@@ -41,7 +43,7 @@ externalLoads ::ReadP (LoadNumber, [ExternalForce])
 externalLoads = do
     loadNumber <- munch1 PP.whiteSpace >> munch PP.digit
     tr <- many (munch1 PP.whiteSpace >> munch1 PP.floatDot)
-    satisfy PP.eol
+    munch1 (`elem` "\r\n")
     return (read loadNumber, map read tr)
 
 
