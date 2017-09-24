@@ -20,6 +20,8 @@ library
                        , aeson
                        , split
                        , bytestring
+                       , Chart
+                       , Chart-diagrams
   default-language:    Haskell2010
 
 executable diana-out-parser-exe
